@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rishu Singh - Full Stack Developer</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React and ReactDOM CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+
+        /* Light Theme (Default) */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-card: #f3f4f6;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --accent: #0ea5e9;
+            --accent-dark: #0284c7;
+        }
+
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --accent: #0ea5e9;
+            --accent-dark: #0284c7;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-color: var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .card:hover {
+            box-shadow: 0 10px 25px rgba(0, 165, 240, 0.15);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .typewriter {
+            display: inline-block;
+            border-right: 3px solid var(--accent);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-right-color: var(--accent); }
+            100% { border-right-color: transparent; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-image {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .hero-image {
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.2);
+        }
+
+        input, textarea {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+            outline: none;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .code-block {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .dev-icon {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .dev-icon {
+            transform: scale(1.1);
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+
+        .about-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .theme-toggle {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            width: 60px;
+            height: 30px;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.dark {
+            background-color: #334155;
+            border-color: #475569;
+        }
+
+        .theme-toggle-circle {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: var(--text-primary);
+            border-radius: 50%;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.dark .theme-toggle-circle {
+            left: 34px;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            left: -8px;
+            top: 24px;
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .section-title {
+                font-size: 1.875rem;
+            }
+
+            .nav-desktop {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .nav-mobile {
+                display: none !important;
+            }
+        }
+
+        .section {
+            padding: 5rem 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .glass-effect {
+            background: rgba(15, 23, 42, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-white transition-colors duration-300">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Theme Context
+        function useTheme() {
+            const [theme, setTheme] = useState('light');
+
+            useEffect(() => {
+                const stored = localStorage.getItem('theme') || 'light';
+                setTheme(stored);
+                document.documentElement.setAttribute('data-theme', stored);
+            }, []);
+
+            const toggleTheme = () => {
+                const newTheme = theme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            };
+
+            return { theme, toggleTheme };
+        }
+
+        // Navbar Component
+        function Navbar({ theme, toggleTheme }) {
+            const [isOpen, setIsOpen] = useState(false);
+
+            const navLinks = [
+                { name: 'Home', id: 'home' },
+                { name: 'About', id: 'about' },
+                { name: 'Skills', id: 'skills' },
+                { name: 'Tools', id: 'tools' },
+                { name: 'Education', id: 'education' },
+                { name: 'Projects', id: 'projects' },
+                { name: 'Goal', id: 'goal' },
+                { name: 'Contact', id: 'contact' }
+            ];
+
+            const scrollToSection = (id) => {
+                setIsOpen(false);
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            return (
+                <nav className={`fixed top-0 w-full z-50 ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-slate-900 border-slate-700'} border-b transition-colors duration-300`}>
+                    <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center w-full">
+                        <button 
+                            onClick={() => scrollToSection('home')}
+                            className="font-bold text-2xl gradient-text"
+                        >
+                            Rishu.
+                        </button>
+                        
+                        {/* Desktop Menu */}
+                        <div className={`nav-desktop hidden md:flex gap-8`}>
+                            {navLinks.map(link => (
+                                <button
+                                    key={link.id}
+                                    onClick={() => scrollToSection(link.id)}
+                                    className={`nav-link text-sm font-medium transition ${theme === 'light' ? 'text-gray-700 hover:text-cyan-500' : 'text-gray-300 hover:text-cyan-400'}`}
+                                >
+                                    {link.name}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Right side - Theme Toggle & Hamburger */}
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={toggleTheme}
+                                className={`theme-toggle ${theme === 'dark' ? 'dark' : ''}`}
+                                aria-label="Toggle theme"
+                            >
+                                <div className="theme-toggle-circle"></div>
+                            </button>
+
+                            {/* Mobile Hamburger */}
+                            <div 
+                                className="hamburger nav-mobile"
+                                onClick={() => setIsOpen(!isOpen)}
+                            >
+                                <span style={{transform: isOpen ? 'rotate(45deg) translate(10px, 10px)' : 'none'}}></span>
+                                <span style={{opacity: isOpen ? 0 : 1}}></span>
+                                <span style={{transform: isOpen ? 'rotate(-45deg) translate(7px, -7px)' : 'none'}}></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Mobile Menu */}
+                    {isOpen && (
+                        <div className={`nav-mobile ${theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-slate-800 border-slate-700'} border-t p-4`}>
+                            <div className="flex flex-col gap-4">
+                                {navLinks.map(link => (
+                                    <button
+                                        key={link.id}
+                                        onClick={() => scrollToSection(link.id)}
+                                        className={`text-left font-medium transition ${theme === 'light' ? 'text-gray-700 hover:text-cyan-500' : 'text-gray-300 hover:text-cyan-400'}`}
+                                    >
+                                        {link.name}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </nav>
+            );
+        }
+
+        // Hero Section Component
+        function Hero({ theme }) {
+            return (
+                <section id="home" className="section min-h-screen pt-32 md:pt-40 pb-12 flex items-center">
+                    <div className="max-w-6xl mx-auto px-4 md:px-6 w-full">
+                        <div className="grid md:grid-cols-2 gap-12 items-center">
+                            {/* Left Content */}
+                            <div className="space-y-6">
+                                <div>
+                                    <div className={`inline-block px-4 py-2 rounded-full mb-4 ${theme === 'light' ? 'bg-blue-100 text-blue-600' : 'bg-blue-900 text-blue-400'}`}>
+                                        <p className="text-sm font-semibold">HELLO, I'M</p>
+                                    </div>
+                                    <h1 className={`text-5xl md:text-6xl font-bold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                                        Rishu Singh
+                                    </h1>
+                                    <p className="text-xl md:text-2xl text-blue-600 font-medium mb-4">
+                                        Aspiring Full Stack Developer
+                                    </p>
+                                    <p className={`text-base leading-relaxed max-w-md ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                        BCA student passionate about building clean, functional web apps. Currently leveling up in full stack development — one project at a time.
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-3 flex-wrap pt-2">
+                                    <button
+                                        onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })}
+                                        className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition transform hover:scale-105"
+                                    >
+                                        View Projects
+                                    </button>
+                                    <button
+                                        onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
+                                        className={`px-6 py-2.5 rounded-lg font-semibold text-sm border-2 transition ${theme === 'light' ? 'border-gray-300 text-gray-700 bg-gray-50 hover:bg-gray-100' : 'border-gray-600 text-gray-300 bg-slate-800 hover:bg-slate-700'}`}
+                                    >
+                                        Contact Me
+                                    </button>
+                                </div>
+
+                                <div className="flex gap-3 pt-4">
+                                    <a href="https://github.com/rishubootX" target="_blank" rel="noopener noreferrer" className={`w-12 h-12 flex items-center justify-center rounded-lg transition transform hover:scale-110 ${theme === 'light' ? 'bg-gray-900 text-white hover:bg-gray-800' : 'bg-gray-800 text-white hover:bg-gray-700'}`}>
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/rishu-singh1" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-lg bg-blue-600 text-white transition transform hover:scale-110 hover:bg-blue-700">
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+                                    </a>
+                                    <a href="mailto:lordrishu@gmail.com" className="w-12 h-12 flex items-center justify-center rounded-lg bg-red-500 text-white transition transform hover:scale-110 hover:bg-red-600">
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Right - Profile Image Area */}
+                            <div className="flex justify-center items-center">
+                                <div className="hero-image w-72 h-72 md:w-80 md:h-80 float-animation overflow-hidden">
+                                    <img 
+                                        src="https://media.base44.com/images/public/user_68ff9a980b22f9ae1dd2c497/b7ba4e2ca_professional_rishu.jpg"
+                                        alt="Rishu Singh"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // About Section Component
+        function About({ theme }) {
+            const aboutCards = [
+                {
+                    title: 'BCA Student',
+                    subtitle: 'Bachelor of Computer Applications',
+                    icon: '📚',
+                    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop',
+                    lightBg: theme === 'light' ? 'bg-blue-50 hover:shadow-lg hover:shadow-blue-200' : 'bg-blue-900/20 hover:shadow-lg hover:shadow-blue-900/50',
+                    titleColor: 'text-blue-600',
+                    bgAccent: 'bg-blue-100'
+                },
+                {
+                    title: 'Web Development',
+                    subtitle: 'Frontend & backend technologies',
+                    icon: '💻',
+                    image: 'https://images.unsplash.com/photo-1593720213428-28a5b9e94613?w=400&h=200&fit=crop',
+                    lightBg: theme === 'light' ? 'bg-indigo-50 hover:shadow-lg hover:shadow-indigo-200' : 'bg-indigo-900/20 hover:shadow-lg hover:shadow-indigo-900/50',
+                    titleColor: 'text-indigo-600',
+                    bgAccent: 'bg-indigo-100'
+                },
+                {
+                    title: 'Full Stack Path',
+                    subtitle: 'Building real-world applications',
+                    icon: '🎯',
+                    image: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=400&h=200&fit=crop',
+                    lightBg: theme === 'light' ? 'bg-green-50 hover:shadow-lg hover:shadow-green-200' : 'bg-green-900/20 hover:shadow-lg hover:shadow-green-900/50',
+                    titleColor: 'text-green-600',
+                    bgAccent: 'bg-green-100'
+                },
+                {
+                    title: 'Problem Solver',
+                    subtitle: 'Turning ideas into clean solutions',
+                    icon: '💡',
+                    image: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=200&fit=crop',
+                    lightBg: theme === 'light' ? 'bg-yellow-50 hover:shadow-lg hover:shadow-yellow-200' : 'bg-yellow-900/20 hover:shadow-lg hover:shadow-yellow-900/50',
+                    titleColor: 'text-yellow-600',
+                    bgAccent: 'bg-yellow-100'
+                }
+            ];
+
+            return (
+                <section id="about" className="section">
+                    <div className="max-w-6xl mx-auto px-4">
+                        <h2 className="text-4xl font-bold mb-12 gradient-text">Get to know me</h2>
+                        
+                        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+                            {/* Left Side */}
+                            <div>
+                                <p className={`text-base leading-relaxed mb-6 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                    I'm <span className="font-semibold text-gray-900 dark:text-white">Rishu Singh</span>, a BCA student at Dr. Hari Singh Gour Central University with a genuine passion for web development. My curiosity about how websites work evolved into a dedicated pursuit of full stack development.
+                                </p>
+
+                                <p className={`text-base leading-relaxed mb-8 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                    I believe in <span className="text-blue-600 font-medium">learning by building</span> — every project pushes me closer to becoming a well-rounded developer who can create real-world applications from idea to deployment.
+                                </p>
+
+                                <div className="code-block">
+                                    <div className="text-cyan-600 font-semibold mb-4 text-xs">developer.js</div>
+                                    <div className={`text-xs leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                                        <div className={theme === 'light' ? 'text-gray-500' : 'text-gray-500'}>// Software Engineer</div>
+                                        <div></div>
+                                        <div><span className="text-cyan-600">const</span> developer = {'{'}
+                                        </div>
+                                        <div className="ml-4">
+                                            <div><span className="text-purple-600">name</span>: <span className="text-orange-600">'Rishu Singh'</span>,</div>
+                                            <div><span className="text-purple-600">skills</span>: [<span className="text-orange-600">'HTML'</span>, <span className="text-orange-600">'CSS'</span>, <span className="text-orange-600">'JS'</span>],</div>
+                                            <div><span className="text-purple-600">focuses</span>: [<span className="text-orange-600">'Full-Stack'</span>, <span className="text-orange-600">'UI/UX'</span>],</div>
+                                            <div><span className="text-purple-600">learning</span>: <span className="text-orange-600">'Always'</span></div>
+                                        </div>
+                                        <div>{'}'}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right Side - 2x2 Grid */}
+                            <div className="grid grid-cols-2 gap-6">
+                                {aboutCards.map((card, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`${card.lightBg} p-6 rounded-lg border transition-all duration-300 ease-out transform hover:scale-105 hover:-translate-y-2 cursor-pointer ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
+                                    >
+                                        <img 
+                                            src={card.image} 
+                                            alt={card.title}
+                                            className="w-full h-40 object-cover rounded-lg mb-4"
+                                        />
+                                        <div className={`${card.bgAccent} w-12 h-12 rounded-lg flex items-center justify-center text-xl mb-3`}>
+                                            {card.icon}
+                                        </div>
+                                        <h3 className={`text-lg font-bold mb-1 ${card.titleColor}`}>
+                                            {card.title}
+                                        </h3>
+                                        <p className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                            {card.subtitle}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Skills Section Component
+        function Skills({ theme }) {
+            const skills = [
+                { 
+                    name: 'HTML5', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', 
+                    desc: 'Markup Language',
+                    lightBg: theme === 'light' ? 'bg-orange-50 hover:shadow-lg hover:shadow-orange-200' : 'bg-orange-900/20 hover:shadow-lg hover:shadow-orange-900/50',
+                    color: 'text-orange-600',
+                    bgAccent: 'bg-orange-100'
+                },
+                { 
+                    name: 'CSS3', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', 
+                    desc: 'Styling & Layout',
+                    lightBg: theme === 'light' ? 'bg-blue-50 hover:shadow-lg hover:shadow-blue-200' : 'bg-blue-900/20 hover:shadow-lg hover:shadow-blue-900/50',
+                    color: 'text-blue-600',
+                    bgAccent: 'bg-blue-100'
+                },
+                { 
+                    name: 'JavaScript', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', 
+                    desc: 'Web Programming',
+                    lightBg: theme === 'light' ? 'bg-yellow-50 hover:shadow-lg hover:shadow-yellow-200' : 'bg-yellow-900/20 hover:shadow-lg hover:shadow-yellow-900/50',
+                    color: 'text-yellow-600',
+                    bgAccent: 'bg-yellow-100'
+                },
+                { 
+                    name: 'C', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg', 
+                    desc: 'Procedural Programming',
+                    lightBg: theme === 'light' ? 'bg-indigo-50 hover:shadow-lg hover:shadow-indigo-200' : 'bg-indigo-900/20 hover:shadow-lg hover:shadow-indigo-900/50',
+                    color: 'text-indigo-600',
+                    bgAccent: 'bg-indigo-100'
+                },
+                { 
+                    name: 'C++', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg', 
+                    desc: 'Systems Programming',
+                    lightBg: theme === 'light' ? 'bg-pink-50 hover:shadow-lg hover:shadow-pink-200' : 'bg-pink-900/20 hover:shadow-lg hover:shadow-pink-900/50',
+                    color: 'text-pink-600',
+                    bgAccent: 'bg-pink-100'
+                },
+                { 
+                    name: 'Java', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', 
+                    desc: 'OOP & Backend',
+                    lightBg: theme === 'light' ? 'bg-red-50 hover:shadow-lg hover:shadow-red-200' : 'bg-red-900/20 hover:shadow-lg hover:shadow-red-900/50',
+                    color: 'text-red-600',
+                    bgAccent: 'bg-red-100'
+                },
+            ];
+
+            return (
+                <section id="skills" className={`section ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
+                    <div className="max-w-6xl mx-auto px-4">
+                        <h2 className="section-title gradient-text">Technologies I work with</h2>
+                        <div className="grid md:grid-cols-3 gap-6">
+                            {skills.map((skill, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`${skill.lightBg} p-6 rounded-lg border transition-all duration-300 ease-out transform hover:scale-105 hover:-translate-y-2 cursor-pointer ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
+                                >
+                                    <div className={`${skill.bgAccent} w-14 h-14 rounded-lg flex items-center justify-center mb-4 mx-auto`}>
+                                        <img src={skill.icon} alt={skill.name} className="w-8 h-8" />
+                                    </div>
+                                    <h3 className={`text-lg font-bold text-center mb-2 ${skill.color}`}>{skill.name}</h3>
+                                    <p className={`text-sm text-center ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{skill.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Tools Section Component
+        function Tools({ theme }) {
+            const tools = [
+                { 
+                    name: 'Git', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
+                    desc: 'Version Control',
+                    details: 'Version control system for tracking code changes and collaborating with teams.',
+                    lightBg: theme === 'light' ? 'bg-orange-50 hover:shadow-lg hover:shadow-orange-200' : 'bg-orange-900/20 hover:shadow-lg hover:shadow-orange-900/50',
+                    color: 'text-orange-600',
+                    bgAccent: 'bg-orange-100'
+                },
+                { 
+                    name: 'GitHub', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
+                    desc: 'Code Hosting',
+                    details: 'Platform for code hosting, collaboration, and open source contributions.',
+                    lightBg: theme === 'light' ? 'bg-gray-100 hover:shadow-lg hover:shadow-gray-300' : 'bg-gray-800 hover:shadow-lg hover:shadow-gray-700',
+                    color: 'text-gray-700 dark:text-gray-300',
+                    bgAccent: 'bg-gray-200 dark:bg-gray-700'
+                },
+                { 
+                    name: 'VS Code', 
+                    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
+                    desc: 'Code Editor',
+                    details: 'Primary code editor with rich extension support for all development work.',
+                    lightBg: theme === 'light' ? 'bg-blue-50 hover:shadow-lg hover:shadow-blue-200' : 'bg-blue-900/20 hover:shadow-lg hover:shadow-blue-900/50',
+                    color: 'text-blue-600',
+                    bgAccent: 'bg-blue-100'
+                },
+            ];
+
+            return (
+                <section id="tools" className={`section ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
+                    <div className="max-w-6xl mx-auto px-4">
+                        <h2 className="section-title gradient-text">My development toolkit</h2>
+                        <div className="grid md:grid-cols-3 gap-6">
+                            {tools.map((tool, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`${tool.lightBg} p-8 rounded-lg border transition-all duration-300 ease-out transform hover:scale-105 hover:-translate-y-2 ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
+                                >
+                                    <div className={`${tool.bgAccent} w-14 h-14 rounded-lg flex items-center justify-center mb-4 mx-auto`}>
+                                        <img src={tool.icon} alt={tool.name} className="w-8 h-8" />
+                                    </div>
+                                    <h3 className={`text-xl font-bold text-center mb-2 ${tool.color}`}>{tool.name}</h3>
+                                    <p className="text-cyan-600 text-sm font-medium text-center mb-3">{tool.desc}</p>
+                                    <p className={`text-sm text-center leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{tool.details}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Education Section Component
+        function Education({ theme }) {
+            const education = [
+                {
+                    title: '10th — ICSE',
+                    school: 'Meghmala Roy Education Centre',
+                    desc: 'Built a strong academic foundation with focus on science, mathematics, and logical reasoning.',
+                    status: 'Completed',
+                    year: '2019'
+                },
+                {
+                    title: '12th — CBSE',
+                    school: 'S.S Public School',
+                    desc: 'Developed analytical thinking and deepened interest in computer science and programming.',
+                    status: 'Completed',
+                    year: '2021'
+                },
+                {
+                    title: 'BCA — Bachelor of Computer Applications',
+                    school: 'Dr. Hari Singh Gour Central University',
+                    desc: 'Specializing in software development and web technologies, building a comprehensive understanding of computer science fundamentals.',
+                    status: 'Currently Pursuing',
+                    year: '2022-2025'
+                },
+            ];
+
+            return (
+                <section id="education" className={`section ${theme === 'light' ? 'bg-gray-50' : 'bg-slate-800'}`}>
+                    <div className="max-w-6xl mx-auto px-4">
+                        <h2 className="section-title gradient-text">Academic journey</h2>
+                        <div className="relative">
+                            {/* Timeline line */}
+                            <div className="hidden md:block absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 via-cyan-400 to-teal-400"></div>
+                            
+                            <div className="space-y-8">
+                                {education.map((edu, idx) => (
+                                    <div key={idx} className="relative md:pl-24">
+                                        {/* Timeline dot */}
+                                        <div className="hidden md:block absolute left-0 top-6 w-4 h-4 rounded-full border-4 border-white bg-cyan-500 shadow-lg" style={{ boxShadow: '0 0 0 4px var(--accent)' }}></div>
+                                        
+                                        <div className={`card p-6 md:p-8 rounded-lg border transition-all duration-300 hover:scale-105 hover:-translate-y-1 ${theme === 'light' ? 'bg-white mt-2' : 'bg-slate-700 mt-2'}`}>
+                                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+                                                <span className={`px-3 py-1 text-xs font-semibold rounded-full w-fit ${edu.status === 'Completed' ? `${theme === 'light' ? 'bg-green-100 text-green-700' : 'bg-green-900/30 text-green-400'}` : `${theme === 'light' ? 'bg-cyan-100 text-cyan-700' : 'bg-cyan-900/30 text-cyan-400'}`}`}>
+                                                    {edu.status}
+                                                </span>
+                                                <span className={`text-sm font-medium ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>{edu.year}</span>
+                                            </div>
+                                            <h3 className="text-xl md:text-2xl font-bold text-cyan-600 mb-2">{edu.title}</h3>
+                                            <p className="font-semibold mb-3">{edu.school}</p>
+                                            <p className={`text-sm md:text-base leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{edu.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Projects Section Component
+        function Projects({ theme }) {
+            const projects = [
+                {
+                    title: 'GuideGO',
+                    description: 'A tourism-focused web application designed to simplify travel experiences. GuideGO connects tourists with local guides and authentic experiences, featuring an intuitive interface with theme switching, role-based navigation for tourists and guides, and an AI-powered chatbot assistant (GoBuddy).',
+                    tags: ['Web App', 'Tourism', 'Frontend'],
+                    link: 'https://parvat-stack.github.io/GuideGO/',
+                    image: 'https://media.base44.com/images/public/69c98290b3507084c7cd4056/ef20c759a_image.png',
+                    color: 'text-cyan-600'
+                },
+                {
+                    title: 'Portfolio Website',
+                    description: 'A modern, fully responsive personal portfolio website built with React and Tailwind CSS. Features smooth scroll animations, dark/light mode toggle, interactive skills and tools sections, an animated typewriter goal section, and a working contact form.',
+                    tags: ['React', 'Tailwind CSS', 'Portfolio'],
+                    link: '#',
+                    current: true,
+                    image: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop',
+                    color: 'text-purple-600'
+                }
+            ];
+
+            return (
+                <section id="projects" className={`section ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
+                    <div className="max-w-6xl mx-auto px-4">
+                        <h2 className="section-title gradient-text">What I've built</h2>
+                        <div className="space-y-12">
+                            {projects.map((project, idx) => (
+                                <div key={idx} className={`card rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg ${theme === 'light' ? 'bg-white' : 'bg-slate-800'}`}>
+                                    <div className="grid md:grid-cols-2 gap-0">
+                                        {/* Left Side - Content */}
+                                        <div className="p-8 md:p-10 flex flex-col justify-between order-2 md:order-1">
+                                            <div>
+                                                <h3 className={`text-3xl font-bold mb-4 ${project.color}`}>{project.title}</h3>
+                                                <p className={`mb-6 leading-relaxed text-base ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>{project.description}</p>
+                                            </div>
+                                            
+                                            <div className="space-y-4">
+                                                <div className="flex gap-2 flex-wrap">
+                                                    {project.tags.map((tag, i) => (
+                                                        <span key={i} className={`px-3 py-1 text-xs font-semibold rounded-full ${idx === 0 ? (theme === 'light' ? 'bg-cyan-100 text-cyan-700' : 'bg-cyan-900/30 text-cyan-400') : (theme === 'light' ? 'bg-purple-100 text-purple-700' : 'bg-purple-900/30 text-purple-400')}`}>
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                                <a
+                                                    href={project.link}
+                                                    target={project.link !== '#' ? '_blank' : '_self'}
+                                                    rel="noopener noreferrer"
+                                                    className={`inline-block px-6 py-3 rounded-lg font-semibold text-sm transition transform hover:scale-105 duration-300 ${project.current ? `${theme === 'light' ? 'bg-gray-200 text-gray-700' : 'bg-gray-700 text-gray-300'} cursor-default` : (idx === 0 ? 'bg-cyan-500 hover:bg-cyan-600 text-white' : 'bg-purple-500 hover:bg-purple-600 text-white')}`}>
+                                                    {project.current ? '🔗 You\'re Here!' : 'View Project →'}
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        {/* Right Side - Image */}
+                                        <div className="overflow-hidden order-1 md:order-2">
+                                            <img 
+                                                src={project.image} 
+                                                alt={project.title}
+                                                className="w-full h-72 md:h-full object-cover transition transform hover:scale-105 duration-500"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Goals Section Component
+        function Goals({ theme }) {
+            const [goalText, setGoalText] = useState('');
+            const goalWords = ['Problem Solver', 'Full Stack Developer', 'Tech Innovator', 'Problem Solver'];
+            const [wordIndex, setWordIndex] = useState(0);
+            const [charIndex, setCharIndex] = useState(0);
+            const [isDeleting, setIsDeleting] = useState(false);
+
+            useEffect(() => {
+                const currentWord = goalWords[wordIndex];
+                let timeout;
+
+                if (!isDeleting && charIndex < currentWord.length) {
+                    timeout = setTimeout(() => {
+                        setGoalText(currentWord.substring(0, charIndex + 1));
+                        setCharIndex(charIndex + 1);
+                    }, 100);
+                } else if (isDeleting && charIndex > 0) {
+                    timeout = setTimeout(() => {
+                        setGoalText(currentWord.substring(0, charIndex - 1));
+                        setCharIndex(charIndex - 1);
+                    }, 50);
+                } else if (!isDeleting && charIndex === currentWord.length) {
+                    timeout = setTimeout(() => {
+                        setIsDeleting(true);
+                    }, 2000);
+                } else if (isDeleting && charIndex === 0) {
+                    setIsDeleting(false);
+                    setWordIndex((prev) => (prev + 1) % goalWords.length);
+                }
+
+                return () => clearTimeout(timeout);
+            }, [charIndex, isDeleting, wordIndex]);
+
+            const goalItems = [
+                'Actively learning & building',
+                'Master frontend technologies',
+                'Build robust backend systems',
+                'Deploy real-world applications',
+                'Launch as a Full Stack Developer'
+            ];
+            
+            const goalItemColors = ['text-blue-600', 'text-cyan-600', 'text-teal-600', 'text-indigo-600', 'text-purple-600'];
+            const goalItemBgs = [
+                theme === 'light' ? 'bg-blue-50' : 'bg-blue-900/20',
+                theme === 'light' ? 'bg-cyan-50' : 'bg-cyan-900/20',
+                theme === 'light' ? 'bg-teal-50' : 'bg-teal-900/20',
+                theme === 'light' ? 'bg-indigo-50' : 'bg-indigo-900/20',
+                theme === 'light' ? 'bg-purple-50' : 'bg-purple-900/20'
+            ];
+
+            return (
+                <section id="goal" className={`section ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
+                    <div className="max-w-6xl mx-auto px-4">
+                        <h2 className="section-title gradient-text">Where I'm headed</h2>
+                        
+                        <div className={`rounded-2xl border p-10 md:p-16 mb-12 transition-all ${theme === 'light' ? 'bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200' : 'bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600'}`}>
+                            <p className={`text-lg md:text-xl font-semibold mb-6 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                                My ambition is to become a
+                            </p>
+                            <div className="text-4xl md:text-5xl font-bold text-cyan-600 mb-8 min-h-16">
+                                {goalText}<span className="typewriter">|</span>
+                            </div>
+                            <p className={`text-base md:text-lg leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                I'm dedicated to building the skills, projects, and experience needed to contribute meaningfully to real-world software — from pixel-perfect frontends to scalable backends.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+                            {goalItems.map((item, idx) => (
+                                <div key={idx} className={`${goalItemBgs[idx]} p-6 rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-default ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${goalItemColors[idx]} bg-white mb-4 font-bold text-lg`}>
+                                        {idx + 1}
+                                    </div>
+                                    <p className={`font-semibold text-sm md:text-base leading-relaxed ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>{item}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Contact Section Component
+        function Contact({ theme }) {
+            const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+            const [errors, setErrors] = useState({});
+            const [submitted, setSubmitted] = useState(false);
+
+            const validateForm = () => {
+                const newErrors = {};
+                if (!formData.name.trim()) newErrors.name = 'Name is required';
+                if (!formData.email.trim()) {
+                    newErrors.email = 'Email is required';
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+                    newErrors.email = 'Please enter a valid email';
+                }
+                if (!formData.message.trim()) newErrors.message = 'Message is required';
+                return newErrors;
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                const newErrors = validateForm();
+                
+                if (Object.keys(newErrors).length === 0) {
+                    setSubmitted(true);
+                    setFormData({ name: '', email: '', message: '' });
+                    setTimeout(() => setSubmitted(false), 5000);
+                } else {
+                    setErrors(newErrors);
+                }
+            };
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData(prev => ({ ...prev, [name]: value }));
+                if (errors[name]) {
+                    setErrors(prev => ({ ...prev, [name]: '' }));
+                }
+            };
+
+            return (
+                <section id="contact" className={`section ${theme === 'light' ? 'bg-gray-50' : 'bg-slate-800'}`}>
+                    <div className="max-w-6xl mx-auto px-4">
+                        <h2 className="section-title gradient-text">Let's connect</h2>
+                        <p className={`text-lg mb-12 max-w-2xl ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                            I'm always open to new projects, creative ideas, and collaborations. Drop me a message through the form or connect via any of the channels below.
+                        </p>
+                        
+                        <div className="grid md:grid-cols-2 gap-12">
+                            {/* Contact Info */}
+                            <div className="space-y-6">
+                                <div className={`${theme === 'light' ? 'bg-blue-50 border-blue-200' : 'bg-blue-900/20 border-blue-800'} p-8 rounded-lg border transition-all duration-300 hover:scale-105 hover:-translate-y-1`}>
+                                    <p className="font-semibold mb-4 flex items-center gap-2 text-lg">📧 Email</p>
+                                    <a href="mailto:lordrishu@gmail.com" className="text-blue-600 hover:text-blue-700 transition text-base font-medium break-all">
+                                        lordrishu@gmail.com
+                                    </a>
+                                </div>
+
+                                <div className={`${theme === 'light' ? 'bg-cyan-50 border-cyan-200' : 'bg-cyan-900/20 border-cyan-800'} p-8 rounded-lg border transition-all duration-300 hover:scale-105 hover:-translate-y-1`}>
+                                    <p className="font-semibold mb-4 flex items-center gap-2 text-lg">💼 LinkedIn</p>
+                                    <a href="https://www.linkedin.com/in/rishu-singh1" target="_blank" rel="noopener noreferrer" className="text-cyan-600 hover:text-cyan-700 transition text-base font-medium break-all">
+                                        linkedin.com/in/rishu-singh1
+                                    </a>
+                                </div>
+
+                                <div className={`${theme === 'light' ? 'bg-gray-200 border-gray-300' : 'bg-gray-700 border-gray-600'} p-8 rounded-lg border transition-all duration-300 hover:scale-105 hover:-translate-y-1`}>
+                                    <p className="font-semibold mb-4 flex items-center gap-2 text-lg">🐙 GitHub</p>
+                                    <a href="https://github.com/rishubootX" target="_blank" rel="noopener noreferrer" className={`transition text-base font-medium break-all ${theme === 'light' ? 'text-gray-800 hover:text-gray-900' : 'text-gray-300 hover:text-gray-100'}`}>
+                                        github.com/rishubootX
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Contact Form */}
+                            <div className={`${theme === 'light' ? 'bg-white border-gray-200' : 'bg-slate-800 border-gray-700'} p-8 rounded-lg border transition-all`}>
+                                {submitted && (
+                                    <div className={`mb-6 p-4 rounded-lg flex items-start gap-3 ${theme === 'light' ? 'bg-green-100 border border-green-300 text-green-700' : 'bg-green-900/30 border border-green-700 text-green-300'}`}>
+                                        <span className="text-xl">✓</span>
+                                        <div>
+                                            <p className="font-semibold">Thank you!</p>
+                                            <p className="text-sm">I'll get back to you soon.</p>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    <div>
+                                        <label className="block font-semibold mb-3">Your Name</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            placeholder="John Doe"
+                                            className={`w-full rounded-lg px-4 py-3 border transition ${theme === 'light' ? 'bg-white border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100' : 'bg-slate-700 border-slate-600 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-900'}`}
+                                        />
+                                        {errors.name && <p className="text-red-500 text-sm mt-2 font-medium">✗ {errors.name}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block font-semibold mb-3">Email Address</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            placeholder="your@email.com"
+                                            className={`w-full rounded-lg px-4 py-3 border transition ${theme === 'light' ? 'bg-white border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100' : 'bg-slate-700 border-slate-600 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-900'}`}
+                                        />
+                                        {errors.email && <p className="text-red-500 text-sm mt-2 font-medium">✗ {errors.email}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block font-semibold mb-3">Your Message</label>
+                                        <textarea
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                            placeholder="Tell me about your project..."
+                                            rows="5"
+                                            className={`w-full rounded-lg px-4 py-3 border transition resize-none ${theme === 'light' ? 'bg-white border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100' : 'bg-slate-700 border-slate-600 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-900'}`}
+                                        ></textarea>
+                                        {errors.message && <p className="text-red-500 text-sm mt-2 font-medium">✗ {errors.message}</p>}
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg font-semibold transition transform hover:scale-105 duration-300 shadow-lg"
+                                    >
+                                        Send Message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Footer Component
+        function Footer({ theme }) {
+            return (
+                <footer className={`${theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-slate-800 border-slate-700'} border-t py-8`}>
+                    <div className="max-w-6xl mx-auto px-4 md:px-6">
+                        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                            <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                © 2026 Rishu Singh. All rights reserved.
+                            </p>
+                            <div className="flex gap-6">
+                                <a href="https://github.com/rishubootX" target="_blank" rel="noopener noreferrer" className={`text-2xl transition hover:text-cyan-500 ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                </a>
+                                <a href="https://www.linkedin.com/in/rishu-singh1" target="_blank" rel="noopener noreferrer" className={`text-2xl transition hover:text-cyan-500 ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+                                </a>
+                                <a href="mailto:lordrishu@gmail.com" className={`text-2xl transition hover:text-cyan-500 ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const { theme, toggleTheme } = useTheme();
+
+            return (
+                <div className="min-h-screen">
+                    <Navbar theme={theme} toggleTheme={toggleTheme} />
+                    <main className="pt-16">
+                        <Hero theme={theme} />
+                        <About theme={theme} />
+                        <Skills theme={theme} />
+                        <Tools theme={theme} />
+                        <Education theme={theme} />
+                        <Goals theme={theme} />
+                        <Projects theme={theme} />
+                        <Contact theme={theme} />
+                    </main>
+                    <Footer theme={theme} />
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html>
