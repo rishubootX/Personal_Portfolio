@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -449,6 +450,85 @@
             object-fit: cover;
             border-radius: 12px;
             margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .about-card img:hover {
+            box-shadow: 0 12px 36px rgba(14, 165, 233, 0.35);
+            transform: translateY(-4px);
+        }
+
+        /* About Cards Loading Animation */
+        .about-card {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .about-card.is-visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            animation: aboutCardLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes aboutCardLoadIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Tools Cards Loading Animation */
+        .tool-card {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tool-card.is-visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            animation: toolCardLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes toolCardLoadIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Projects Cards Loading Animation */
+        .project-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            animation: projectCardLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes projectCardLoadIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .theme-toggle {
@@ -1879,6 +1959,8 @@
 
         // About Section Component
         function About({ theme }) {
+            const aboutCardsRef = React.useRef([]);
+
             const aboutCards = [
                 {
                     title: 'BCA Student',
@@ -1917,6 +1999,31 @@
                     bgAccent: 'bg-yellow-100'
                 }
             ];
+
+            React.useEffect(() => {
+                // Create Intersection Observer for scroll-triggered animations
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                            }
+                        });
+                    },
+                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                );
+
+                // Observe all about cards
+                aboutCardsRef.current.forEach((card) => {
+                    if (card) observer.observe(card);
+                });
+
+                return () => {
+                    aboutCardsRef.current.forEach((card) => {
+                        if (card) observer.unobserve(card);
+                    });
+                };
+            }, []);
 
             return (
                 <section id="about" className="section">
@@ -1957,7 +2064,8 @@
                                 {aboutCards.map((card, idx) => (
                                     <div
                                         key={idx}
-                                        className={`card ${card.lightBg} p-4 sm:p-6 rounded-lg border cursor-pointer ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
+                                        ref={(el) => aboutCardsRef.current[idx] = el}
+                                        className={`card about-card ${card.lightBg} p-4 sm:p-6 rounded-lg border cursor-pointer ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
                                     >
                                         <img 
                                             src={card.image} 
@@ -2095,6 +2203,8 @@
 
         // Tools Section Component
         function Tools({ theme }) {
+            const toolsRef = React.useRef([]);
+
             const tools = [
                 { 
                     name: 'Git', 
@@ -2125,6 +2235,31 @@
                 },
             ];
 
+            React.useEffect(() => {
+                // Create Intersection Observer for scroll-triggered animations
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                            }
+                        });
+                    },
+                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                );
+
+                // Observe all tool cards
+                toolsRef.current.forEach((card) => {
+                    if (card) observer.observe(card);
+                });
+
+                return () => {
+                    toolsRef.current.forEach((card) => {
+                        if (card) observer.unobserve(card);
+                    });
+                };
+            }, []);
+
             return (
                 <section id="tools" className={`section ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
                     <div className="max-w-6xl mx-auto px-4">
@@ -2133,7 +2268,8 @@
                             {tools.map((tool, idx) => (
                                 <div
                                     key={idx}
-                                    className={`card ${tool.lightBg} p-8 rounded-lg border ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
+                                    ref={(el) => toolsRef.current[idx] = el}
+                                    className={`card tool-card ${tool.lightBg} p-8 rounded-lg border ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
                                 >
                                     <div className={`${tool.bgAccent} w-14 h-14 rounded-lg flex items-center justify-center mb-4 mx-auto`}>
                                         <img src={tool.icon} alt={tool.name} className="w-8 h-8" />
@@ -2276,6 +2412,8 @@
 
         // Projects Section Component
         function Projects({ theme }) {
+            const projectsRef = React.useRef([]);
+
             const projects = [
                 {
                     title: 'GuideGO',
@@ -2296,13 +2434,38 @@
                 }
             ];
 
+            React.useEffect(() => {
+                // Create Intersection Observer for scroll-triggered animations
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                            }
+                        });
+                    },
+                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                );
+
+                // Observe all project cards
+                projectsRef.current.forEach((card) => {
+                    if (card) observer.observe(card);
+                });
+
+                return () => {
+                    projectsRef.current.forEach((card) => {
+                        if (card) observer.unobserve(card);
+                    });
+                };
+            }, []);
+
             return (
                 <section id="projects" className={`section ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
                     <div className="max-w-6xl mx-auto px-4">
                         <h2 className="section-title gradient-text">What I've built</h2>
                         <div className="space-y-12">
                             {projects.map((project, idx) => (
-                                <div key={idx} className={`card rounded-xl border ${theme === 'light' ? 'bg-white' : 'bg-slate-800'}`}>
+                                <div key={idx} ref={(el) => projectsRef.current[idx] = el} className={`card project-card rounded-xl border ${theme === 'light' ? 'bg-white' : 'bg-slate-800'}`}>
                                     <div className="grid md:grid-cols-2 gap-0">
                                         {/* Left Side - Content */}
                                         <div className="p-8 md:p-10 flex flex-col justify-between order-2 md:order-1">
