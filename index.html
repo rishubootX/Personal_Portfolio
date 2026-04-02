@@ -395,10 +395,17 @@
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 24px;
+            padding: 16px 12px;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 12px;
             overflow-x: auto;
+        }
+
+        @media (min-width: 640px) {
+            .code-block {
+                padding: 24px;
+                font-size: 14px;
+            }
         }
 
         .dev-icon {
@@ -1182,6 +1189,473 @@
                 transform: scale(1) translateY(0);
             }
         }
+
+        /* Goal Cards Animation */
+        .goal-card {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .goal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: 0;
+        }
+
+        .goal-card:hover::before {
+            left: 100%;
+        }
+
+        .goal-card.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            animation: goalCardSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes goalCardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .goal-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .goal-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+            color: currentColor;
+        }
+
+        .goal-card:hover .goal-card-icon {
+            transform: scale(1.15) rotate(3deg);
+        }
+
+        .goal-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 32px rgba(14, 165, 233, 0.15);
+        }
+
+        [data-theme="dark"] .goal-card:hover {
+            box-shadow: 0 16px 32px rgba(14, 165, 233, 0.25);
+        }
+
+        .goal-card-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .goal-card-desc {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        .goal-card-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Goal Section - New Design */
+        .goal-section-header {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #3b82f6;
+        }
+
+        [data-theme="dark"] .goal-section-header {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+        }
+
+        .goal-main-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .goal-main-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .goal-left-section {
+            position: relative;
+        }
+
+        .goal-left-decorative {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatInCircle 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes floatInCircle {
+            from {
+                opacity: 0;
+                transform: scale(0.5) translate(-10px, -10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translate(0, 0);
+            }
+        }
+
+        .goal-left-decorative::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background: #f59e0b;
+            border-radius: 50%;
+        }
+
+        .goal-content-box {
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUpGoal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 0.3s;
+            border: 2px solid;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark theme - enhanced gradient with more depth */
+        [data-theme="dark"] .goal-content-box {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%), linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
+            background-blend-mode: overlay, normal;
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 60px rgba(59, 130, 246, 0.1),
+                inset 0 1px 0 rgba(59, 130, 246, 0.2);
+        }
+
+        /* Light theme - elegant gradient */
+        [data-theme="light"] .goal-content-box {
+            background: linear-gradient(135deg, rgba(219, 234, 254, 0.8) 0%, rgba(240, 249, 255, 0.9) 100%), linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, transparent 100%);
+            background-blend-mode: overlay, normal;
+            border-color: rgba(59, 130, 246, 0.2);
+            box-shadow: 
+                0 20px 40px rgba(59, 130, 246, 0.1),
+                0 0 40px rgba(59, 130, 246, 0.05),
+                inset 0 1px 0 rgba(59, 130, 246, 0.15);
+        }
+
+        [data-theme="dark"] .goal-content-box:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 80px rgba(59, 130, 246, 0.2),
+                inset 0 1px 0 rgba(59, 130, 246, 0.3);
+            transform: translateY(0);
+        }
+
+        [data-theme="light"] .goal-content-box:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 
+                0 30px 60px rgba(59, 130, 246, 0.15),
+                0 0 60px rgba(59, 130, 246, 0.1),
+                inset 0 1px 0 rgba(59, 130, 246, 0.25);
+            transform: translateY(0);
+        }
+
+        @keyframes slideUpGoal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .goal-content-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%);
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .goal-content-box:hover::before {
+            opacity: 1;
+        }
+
+        .goal-content-box::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4) 50%, transparent);
+            pointer-events: none;
+        }
+
+        .goal-content-box p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .goal-typewriter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            min-height: 3rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        [data-theme="light"] .goal-typewriter {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0c4a6e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .goal-description {
+            color: #d1d5db;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .goal-checklist {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: #10b981;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .goal-checklist::before {
+            content: '●';
+            font-size: 1.2rem;
+            color: #10b981;
+        }
+
+        .goal-right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateX(20px);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .goal-item.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .goal-item:nth-child(1) {
+            animation-delay: 0.4s;
+            border-color: rgba(251, 146, 60, 0.3);
+            background: rgba(251, 146, 60, 0.05);
+        }
+
+        .goal-item:nth-child(2) {
+            animation-delay: 0.5s;
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .goal-item:nth-child(3) {
+            animation-delay: 0.6s;
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .goal-item:nth-child(4) {
+            animation-delay: 0.7s;
+            border-color: rgba(168, 85, 247, 0.3);
+            background: rgba(168, 85, 247, 0.05);
+        }
+
+        @keyframes slideInGoalItem {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .goal-item.is-visible {
+            animation: slideInGoalItem 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .goal-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.1);
+        }
+
+        [data-theme="dark"] .goal-item:hover {
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.15);
+        }
+
+        .goal-item-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+        }
+
+        .goal-item-text {
+            flex: 1;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        [data-theme="light"] .goal-item-text {
+            color: #1f2937;
+        }
+
+        [data-theme="dark"] .goal-item-text {
+            color: #f3f4f6;
+        }
+
+        .goal-item-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .goal-item:nth-child(1) .goal-item-dot {
+            background: #fb923c;
+        }
+
+        .goal-item:nth-child(2) .goal-item-dot {
+            background: #3b82f6;
+        }
+
+        .goal-item:nth-child(3) .goal-item-dot {
+            background: #10b981;
+        }
+
+        .goal-item:nth-child(4) .goal-item-dot {
+            background: #a855f7;
+        }
+
+        .goal-item:hover .goal-item-dot {
+            transform: scale(1.5);
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        [data-theme="light"] .goal-content-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            box-shadow: 0 16px 32px rgba(59, 130, 246, 0.1);
+        }
+
+        [data-theme="light"] .goal-typewriter {
+            color: #0284c7;
+        }
+
+        [data-theme="light"] .goal-item {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.08) 0%, rgba(251, 146, 60, 0.02) 100%);
+        }
+
+        [data-theme="light"] .goal-item:nth-child(2) {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);
+        }
+
+        [data-theme="light"] .goal-item:nth-child(3) {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+        }
+
+        [data-theme="light"] .goal-item:nth-child(4) {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0.02) 100%);
+        }
     </style>
 </head>
 <body class="bg-white transition-colors duration-300">
@@ -1478,25 +1952,25 @@
                                 </div>
                             </div>
 
-                            {/* Right Side - 2x2 Grid */}
-                            <div className="grid grid-cols-2 gap-6">
+                            {/* Right Side - Responsive Grid (1 col on mobile, 2 on md) */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                                 {aboutCards.map((card, idx) => (
                                     <div
                                         key={idx}
-                                        className={`card ${card.lightBg} p-6 rounded-lg border cursor-pointer ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
+                                        className={`card ${card.lightBg} p-4 sm:p-6 rounded-lg border cursor-pointer ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}
                                     >
                                         <img 
                                             src={card.image} 
                                             alt={card.title}
-                                            className="w-full h-40 object-cover rounded-lg mb-4"
+                                            className="w-full h-32 sm:h-40 object-cover rounded-lg mb-3 sm:mb-4"
                                         />
-                                        <div className={`${card.bgAccent} w-12 h-12 rounded-lg flex items-center justify-center text-xl mb-3`}>
+                                        <div className={`${card.bgAccent} w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-lg sm:text-xl mb-2 sm:mb-3`}>
                                             {card.icon}
                                         </div>
-                                        <h3 className={`text-lg font-bold mb-1 ${card.titleColor}`}>
+                                        <h3 className={`text-base sm:text-lg font-bold mb-1 ${card.titleColor}`}>
                                             {card.title}
                                         </h3>
-                                        <p className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                        <p className={`text-xs sm:text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                             {card.subtitle}
                                         </p>
                                     </div>
@@ -1872,68 +2346,119 @@
             );
         }
 
-        // Goals Section Component
+        // Goals Section Component - Redesigned
         function Goals({ theme }) {
             const [goalText, setGoalText] = useState('');
-            const fullStackDeveloper = 'Full Stack Developer';
             const [charIndex, setCharIndex] = useState(0);
+            const goalItemsRef = React.useRef([]);
+
+            const fullStackDeveloper = 'Full Stack Developer';
 
             useEffect(() => {
                 let timeout;
-
                 if (charIndex < fullStackDeveloper.length) {
                     timeout = setTimeout(() => {
                         setGoalText(fullStackDeveloper.substring(0, charIndex + 1));
                         setCharIndex(charIndex + 1);
-                    }, 100);
+                    }, 80);
                 }
-
                 return () => clearTimeout(timeout);
             }, [charIndex]);
 
             const goalItems = [
-                'Actively learning & building',
-                'Master frontend technologies',
-                'Build robust backend systems',
-                'Deploy real-world applications',
-                'Launch as a Full Stack Developer'
+                {
+                    text: 'Master frontend technologies',
+                    icon: '</>'
+                },
+                {
+                    text: 'Build robust backend systems',
+                    icon: '▦'
+                },
+                {
+                    text: 'Deploy real-world applications',
+                    icon: '⊙'
+                },
+                {
+                    text: 'Launch as a Full Stack Developer',
+                    icon: '⭐'
+                }
             ];
-            
-            const goalItemColors = ['text-blue-600', 'text-cyan-600', 'text-teal-600', 'text-indigo-600', 'text-purple-600'];
-            const goalItemBgs = [
-                theme === 'light' ? 'bg-blue-50' : 'bg-blue-900/20',
-                theme === 'light' ? 'bg-cyan-50' : 'bg-cyan-900/20',
-                theme === 'light' ? 'bg-teal-50' : 'bg-teal-900/20',
-                theme === 'light' ? 'bg-indigo-50' : 'bg-indigo-900/20',
-                theme === 'light' ? 'bg-purple-50' : 'bg-purple-900/20'
-            ];
+
+            React.useEffect(() => {
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                            }
+                        });
+                    },
+                    {
+                        threshold: 0.15,
+                        rootMargin: '0px 0px -50px 0px'
+                    }
+                );
+
+                goalItemsRef.current.forEach((item) => {
+                    if (item) {
+                        observer.observe(item);
+                    }
+                });
+
+                return () => {
+                    goalItemsRef.current.forEach((item) => {
+                        if (item) {
+                            observer.unobserve(item);
+                        }
+                    });
+                };
+            }, []);
 
             return (
                 <section id="goal" className={`section ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
                     <div className="max-w-6xl mx-auto px-4">
-                        <h2 className="section-title gradient-text">Where I'm headed</h2>
+                        <div className="goal-section-header">MY GOAL</div>
+                        <h2 className={`section-title gradient-text mb-12 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Where I'm headed</h2>
                         
-                        <div className={`rounded-2xl border p-10 md:p-16 mb-12 transition-all ${theme === 'light' ? 'bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200' : 'bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600'}`}>
-                            <p className={`text-lg md:text-xl font-semibold mb-6 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
-                                My ambition is to become a
-                            </p>
-                            <div className="text-4xl md:text-5xl font-bold text-cyan-600 mb-8 min-h-16">
-                                {goalText}<span className="typewriter">|</span>
-                            </div>
-                            <p className={`text-base md:text-lg leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                                I'm dedicated to building the skills, projects, and experience needed to contribute meaningfully to real-world software — from pixel-perfect frontends to scalable backends.
-                            </p>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-                            {goalItems.map((item, idx) => (
-                                <div key={idx} className={`${goalItemBgs[idx]} p-6 rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-default ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}>
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${goalItemColors[idx]} bg-white mb-4 font-bold text-lg`}>
-                                        {idx + 1}
+                        <div className="goal-main-container">
+                            {/* Left Section */}
+                            <div className="goal-left-section">
+                                <div className="goal-left-decorative"></div>
+                                
+                                <div className={`goal-content-box ${theme === 'light' ? 'bg-blue-50 border border-blue-100' : 'bg-slate-800 border border-slate-700'}`}>
+                                    <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                        My ambition is to become a
+                                    </p>
+                                    <div className={`goal-typewriter ${theme === 'light' ? 'text-blue-700' : 'text-blue-400'}`}>
+                                        {goalText}<span className="typewriter">|</span>
                                     </div>
-                                    <p className={`font-semibold text-sm md:text-base leading-relaxed ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>{item}</p>
+                                    <p className={`goal-description ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                                        I'm dedicated to building the skills, projects, and experience needed to contribute meaningfully to real-world software.
+                                    </p>
+                                    <div className="goal-checklist">
+                                        Actively learning & building
+                                    </div>
                                 </div>
-                            ))}
+                            </div>
+
+                            {/* Right Section */}
+                            <div className="goal-right-section">
+                                {goalItems.map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        ref={(el) => goalItemsRef.current[idx] = el}
+                                        className={`goal-item ${
+                                            theme === 'light' 
+                                                ? 'bg-white border-gray-200' 
+                                                : 'bg-slate-800 border-slate-700'
+                                        }`}
+                                    >
+                                        <div className="goal-item-icon">{item.icon}</div>
+                                        <div className="goal-item-text">{item.text}</div>
+                                        <div className="goal-item-dot"></div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </section>
