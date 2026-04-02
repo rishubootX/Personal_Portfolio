@@ -464,12 +464,34 @@
             opacity: 0;
             transform: scale(0.95) translateY(20px);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
         }
 
         .about-card.is-visible {
             opacity: 1;
             transform: scale(1) translateY(0);
             animation: aboutCardLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @media (max-width: 768px) {
+            .about-card {
+                transform: scale(0.98) translateY(15px);
+            }
+
+            .about-card.is-visible {
+                animation: aboutCardLoadInMobile 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+        }
+
+        @keyframes aboutCardLoadInMobile {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         @keyframes aboutCardLoadIn {
@@ -488,12 +510,34 @@
             opacity: 0;
             transform: scale(0.95) translateY(20px);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
         }
 
         .tool-card.is-visible {
             opacity: 1;
             transform: scale(1) translateY(0);
             animation: toolCardLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @media (max-width: 768px) {
+            .tool-card {
+                transform: scale(0.98) translateY(15px);
+            }
+
+            .tool-card.is-visible {
+                animation: toolCardLoadInMobile 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+        }
+
+        @keyframes toolCardLoadInMobile {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         @keyframes toolCardLoadIn {
@@ -512,12 +556,34 @@
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
         }
 
         .project-card.is-visible {
             opacity: 1;
             transform: translateY(0);
             animation: projectCardLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @media (max-width: 768px) {
+            .project-card {
+                transform: translateY(20px);
+            }
+
+            .project-card.is-visible {
+                animation: projectCardLoadInMobile 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+        }
+
+        @keyframes projectCardLoadInMobile {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes projectCardLoadIn {
@@ -778,6 +844,13 @@
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item {
+                transform: translateY(20px);
+            }
         }
 
         .timeline-item.is-visible {
@@ -1248,15 +1321,34 @@
             opacity: 0;
             transform: scale(0.95) translateY(20px);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
         }
 
         .skill-card.is-visible {
             opacity: 1;
             transform: scale(1) translateY(0);
+            animation: skillLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        .skill-card.is-visible {
-            animation: skillLoadIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        @media (max-width: 768px) {
+            .skill-card {
+                transform: scale(0.98) translateY(15px);
+            }
+
+            .skill-card.is-visible {
+                animation: skillLoadInMobile 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+        }
+
+        @keyframes skillLoadInMobile {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         @keyframes skillLoadIn {
@@ -1277,6 +1369,13 @@
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            will-change: opacity, transform;
+        }
+
+        @media (max-width: 768px) {
+            .goal-card {
+                transform: translateY(20px) scale(0.97);
+            }
         }
 
         .goal-card::before {
@@ -2010,7 +2109,7 @@
                             }
                         });
                     },
-                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                    { threshold: 0.05, rootMargin: '0px 0px 0px 0px' }
                 );
 
                 // Observe all about cards
@@ -2245,7 +2344,7 @@
                             }
                         });
                     },
-                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                    { threshold: 0.05, rootMargin: '0px 0px 0px 0px' }
                 );
 
                 // Observe all tool cards
@@ -2444,7 +2543,7 @@
                             }
                         });
                     },
-                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                    { threshold: 0.05, rootMargin: '0px 0px 0px 0px' }
                 );
 
                 // Observe all project cards
